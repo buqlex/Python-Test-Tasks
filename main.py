@@ -23,6 +23,46 @@ def num_convert_special_to_good(src_str: str):
 # endregion
 
 
+# region task2
+
+# Напишите функцию, которая добавляет k банкоматов таким образом,
+# чтобы максимальное расстояние между соседними банкоматами являлось минимально возможным,
+# и возвращает список новых расстояний между банкоматами.
+
+def add_atms(n: int, k: int, distances):
+    """
+    Добавление k-банкоматов,
+    чтобы максимальное расстояние между соседними банкоматами являлось минимально возможным
+
+    :param n: n-банкоматов уже существующих
+    :param k: k-банкоматов к постройке
+    :param distances: n-1 расстояний L, где L[i] – расстояние между банкоматами i и i+1
+    :return: список новых расстояний между банкоматами
+    """
+
+    total_atms = n + k
+    distances.sort()
+
+    # Распределение новых банкоматов
+    new_distances = []
+    for i in range(k):
+        new_position = (distances[i] + distances[-(i + 1)]) / 2
+        distances.insert(-(i + 1), new_position)
+
+    # Пересчет расстояний с учетом существующих и новых банкоматов
+    current_distance = 0
+    for i in range(total_atms - 1):
+        new_distances.append(current_distance)
+        current_distance += distances[i]
+
+    new_distances.append(current_distance)  # Добавление последнего расстояния
+
+    return new_distances
+
+
+# endregion
+
+
 # region task3
 
 # Напишите функцию, которая принимает на вход список строк, состоящих из цифр,
@@ -61,6 +101,14 @@ if __name__ == '__main__':
 
     # use example task1
     num_convert_special_to_good(src_str)
+
+    # intro to task2
+    print("\nPython Task #2\n")
+
+    # use example task2
+    new_distances = add_atms(5, 3, [100, 30, 20, 80])
+    for distance in new_distances:
+        print(f'{distance:.1f}')
 
     # intro to task3
     print("\nPython Task #3\n")
