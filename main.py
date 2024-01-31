@@ -50,7 +50,7 @@ def add_atms(n, k, distances):
         max_position_index = new_positions.index(max(new_positions))
         new_positions.insert(max_position_index + 1, distances[i])
 
-        # Обновляем новые расстояния
+        # Обновление новых расстояний
         new_distances = [new_positions[j] if j < len(new_positions) else new_distances[j - len(new_positions) + 1] for j in range(total_atms - 1)]
 
     return new_distances
