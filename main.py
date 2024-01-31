@@ -29,7 +29,7 @@ def num_convert_special_to_good(src_str: str):
 # чтобы максимальное расстояние между соседними банкоматами являлось минимально возможным,
 # и возвращает список новых расстояний между банкоматами.
 
-def add_atms(n: int, k: int, distances):
+def add_atms(n, k, distances):
     """
     Добавление k-банкоматов,
     чтобы максимальное расстояние между соседними банкоматами являлось минимально возможным
@@ -43,19 +43,15 @@ def add_atms(n: int, k: int, distances):
     total_atms = n + k
     distances.sort()
 
-    # Распределение новых банкоматов
-    new_distances = []
+    new_distances = distances.copy()
+
     for i in range(k):
-        new_position = (distances[i] + distances[-(i + 1)]) / 2
-        distances.insert(-(i + 1), new_position)
+        new_positions = [sum(pair) / 2 for pair in zip(new_distances, new_distances[1:])]
+        max_position_index = new_positions.index(max(new_positions))
+        new_positions.insert(max_position_index + 1, distances[i])
 
-    # Пересчет расстояний с учетом существующих и новых банкоматов
-    current_distance = 0
-    for i in range(total_atms - 1):
-        new_distances.append(current_distance)
-        current_distance += distances[i]
-
-    new_distances.append(current_distance)  # Добавление последнего расстояния
+        # Обновляем новые расстояния
+        new_distances = [new_positions[j] if j < len(new_positions) else new_distances[j - len(new_positions) + 1] for j in range(total_atms - 1)]
 
     return new_distances
 
@@ -106,7 +102,7 @@ if __name__ == '__main__':
     print("\nPython Task #2\n")
 
     # use example task2
-    new_distances = add_atms(5, 3, [100, 30, 20, 80])
+    new_distances = add_atms(4, 3, [100, 30, 20, 80])
     for distance in new_distances:
         print(f'{distance:.1f}')
 
