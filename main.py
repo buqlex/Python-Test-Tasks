@@ -15,18 +15,12 @@ def num_convert_special_to_good(src_str: str):
     :param src_str: input string
     """
 
-    special_nums = re.findall(r"\d{2,4}\\\d{2,5}", src_str)
+    special_nums = re.findall(r"\b\d{2,4}\\\d{2,5}\b", src_str)
 
     print('\nВывод списка хороших номеров:')
     for special_num in special_nums:
-        backslash_index = special_num.find('\\')
-        part1 = special_num[:backslash_index]
-        part2 = special_num[backslash_index+1:]
-        while len(part1) < 4:
-            part1 = '0' + part1
-        while len(part2) < 5:
-            part2 = '0' + part2
-        print(f'{part1}\\{part2}')
+        part1, part2 = special_num.split('\\')
+        print(f'{part1.zfill(4)}\\{part2.zfill(5)}')
 
 # endregion
 
