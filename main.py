@@ -1,3 +1,5 @@
+import re
+
 # S B E R - Python Test Tasks
 
 
@@ -7,60 +9,40 @@
 # и для каждого "особенного номера", встречающегося в строке,
 # выводит соответствующий "хороший номер".
 
-def num_convert_special_to_good():
+def num_convert_special_to_good(src_str: str):
     """
-    Task #1: Convert format special number to good number
-
-    input:
-        special_num: string format "2-4num\2-5num"
-    output:
-        good_num: string format "4num\5num"
+    Converting in string each "Special number" to "Good number"
+    :param src_str: input string
     """
 
-    # ПОКОЛДОВАТЬ НАД НАЗВАНИМИ ПЕРЕМЕННЫХ ДЛЯ ЛУЧШЕГО ПОНИМАНИЯ
+    special_nums = re.findall(r"\d{2,4}\\\d{2,5}", src_str)
 
-    # TRY
-
-    # input
-    special_num = input('Please, input \'Special number\' (format: \'Some-word 2-4num\\2-5num\'): ')
-
-    # removing 'Some-word' from beginning of input string
-    some_word_index = special_num.rfind(' ')
-    special_num = special_num[some_word_index+1:]
-
-    # split special_num into part1 and part2
-    slash_index = special_num.rfind('\\')  # if slash_index == -1  ->  ex
-    str_part1 = special_num[:slash_index]  # if len(str_part1) > 4 || len(str_part1) < 2  ->  ex
-    str_part2 = special_num[slash_index+1:]  # if len(str_part2) > 5 || len(str_part2) < 2  ->  ex
-
-    # CATCH
-
-    # function for converting
-    def conv_to_good_num(str_part, n):
-        """
-        Convert format special number to good number
-        :param str_part: source number
-        :param n: max length
-        :return: converted number
-        """
-
-        result_str_part = str_part
-
-        if len(result_str_part) != n:
-            while len(result_str_part) != n:
-                result_str_part = f'0{result_str_part}'
-            return result_str_part
-        return result_str_part
-
-    # converting special number to good number
-    good_num = f'{conv_to_good_num(str_part1, 4)}\\{conv_to_good_num(str_part2, 5)}'
-
-    # output
-    print(f'Result \'Good number\': {good_num}')
+    print('\nВывод списка хороших номеров:')
+    for special_num in special_nums:
+        backslash_index = special_num.find('\\')
+        part1 = special_num[:backslash_index]
+        part2 = special_num[backslash_index+1:]
+        while len(part1) < 4:
+            part1 = '0' + part1
+        while len(part2) < 5:
+            part2 = '0' + part2
+        print(f'{part1}\\{part2}')
 
 # endregion
 
 
 if __name__ == '__main__':
+    # intro
+    print("Python Task #1\n"
+          "Функция принимает на вход строку и для каждого особенного номера,\n"
+          "встречающегося в строке, выводит соответствующий хороший номер\n\n"
+          "    Особенный номер – строка формата    [2-4 цифры]\\[2-5 цифр]\n"
+          "      Хороший номер - строка формата      [4 цифры]\\[5 цифр]")
+
+    # input
+    src_str = input('Пожалуйста, введите строку, которая содержит один или более \'Особенный номер\'\n'
+                    'Пример: Адрес 5467\\456. Номер 405\\549: ')
+
     # add Menu
-    num_convert_special_to_good()
+    num_convert_special_to_good(src_str)
+
